@@ -1,7 +1,9 @@
 ---
 import '../styles/global.css';
-const site = 'https://founderstaff.com';
+const site = 'https://themeinnov8.github.io/founderstaff';
 const repo = 'https://github.com/themeinnov8/founderstaff';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const withBase = (path) => `${base}${path}`;
 const packs = [
   { id: 'core', name: 'Core', skills: 18, desc: 'Chief of staff, dashboard, hiring, roster, rhythms.' },
   { id: 'research', name: 'Research', skills: 7, desc: 'Citation-disciplined market, customer, fact-checking.' },
@@ -20,7 +22,7 @@ const packs = [
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href={withBase('/favicon.svg')} />
     <title>founderstaff — An operating system for founders</title>
     <meta
       name="description"
@@ -147,19 +149,19 @@ const packs = [
   <body>
     <nav class="top">
       <div class="container row">
-        <a class="brand" href="/">
-          <img src="/favicon.svg" alt="" />
+        <a class="brand" href={withBase('/')}>
+          <img src={withBase('/favicon.svg')} alt="" />
           <span>founderstaff</span>
         </a>
         <div class="links">
-          <a href="/getting-started/concepts/">Docs</a>
-          <a href="/agents/">Agents</a>
-          <a href="/examples/">Examples</a>
+          <a href={withBase('/getting-started/concepts/')}>Docs</a>
+          <a href={withBase('/agents/')}>Agents</a>
+          <a href={withBase('/examples/')}>Examples</a>
           <a href={repo}>GitHub</a>
         </div>
         <div class="cta">
           <a class="btn btn-ghost" href={repo}>Star on GitHub</a>
-          <a class="btn btn-primary" href="/getting-started/claude-code/">Get started →</a>
+          <a class="btn btn-primary" href={withBase('/getting-started/claude-code/')}>Get started →</a>
         </div>
       </div>
     </nav>
@@ -173,8 +175,8 @@ const packs = [
           Clone a working business OS. 75 agentic skills across 10 packs. Hire, schedule, and run a team of AI co-workers — all from your editor. Works in <strong style="color:var(--fg)">Claude Code</strong> and <strong style="color:var(--fg)">GitHub Copilot</strong>.
         </p>
         <div class="cta-row">
-          <a class="btn btn-primary" href="/getting-started/claude-code/">Get started in 5 minutes →</a>
-          <a class="btn btn-ghost" href="/examples/">See real examples</a>
+          <a class="btn btn-primary" href={withBase('/getting-started/claude-code/')}>Get started in 5 minutes →</a>
+          <a class="btn btn-ghost" href={withBase('/examples/')}>See real examples</a>
         </div>
         <div class="meta">
           <div class="stat"><strong>75</strong>agentic skills</div>
@@ -349,7 +351,7 @@ const packs = [
           <h2>Stop being your own chief of staff.</h2>
           <p>Clone the OS. Pick your packs. Operate.</p>
           <div class="cta-row" style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
-            <a class="btn btn-primary" href="/getting-started/claude-code/">Get started →</a>
+            <a class="btn btn-primary" href={withBase('/getting-started/claude-code/')}>Get started →</a>
             <a class="btn btn-ghost" href={repo}>View on GitHub</a>
           </div>
         </div>
@@ -361,7 +363,7 @@ const packs = [
         <div class="grid">
           <div>
             <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;font-weight:700;color:var(--fg)">
-              <img src="/favicon.svg" alt="" width="24" height="24" />
+              <img src={withBase('/favicon.svg')} alt="" width="24" height="24" />
               founderstaff
             </div>
             <p style="max-width:340px;line-height:1.6;margin:0">An operating system for founders. 75 agentic skills. Open source under MIT.</p>
@@ -369,18 +371,18 @@ const packs = [
           <div>
             <h5>Product</h5>
             <ul>
-              <li><a href="/getting-started/concepts/">Concepts</a></li>
-              <li><a href="/agents/">Agents</a></li>
-              <li><a href="/rhythms/">Rhythms</a></li>
-              <li><a href="/skills/packs/">Packs</a></li>
+              <li><a href={withBase('/getting-started/concepts/')}>Concepts</a></li>
+              <li><a href={withBase('/agents/')}>Agents</a></li>
+              <li><a href={withBase('/rhythms/')}>Rhythms</a></li>
+              <li><a href={withBase('/skills/packs/')}>Packs</a></li>
             </ul>
           </div>
           <div>
             <h5>Get started</h5>
             <ul>
-              <li><a href="/getting-started/claude-code/">Claude Code</a></li>
-              <li><a href="/getting-started/github-copilot/">GitHub Copilot</a></li>
-              <li><a href="/examples/">Examples</a></li>
+              <li><a href={withBase('/getting-started/claude-code/')}>Claude Code</a></li>
+              <li><a href={withBase('/getting-started/github-copilot/')}>GitHub Copilot</a></li>
+              <li><a href={withBase('/examples/')}>Examples</a></li>
             </ul>
           </div>
           <div>
