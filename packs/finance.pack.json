@@ -1,0 +1,14 @@
+{
+  "id": "finance",
+  "name": "Finance",
+  "summary": "Cashflow, runway, pricing, unit economics, invoicing. Conservative by default.",
+  "version": "0.2.0",
+  "skills": [
+    "finance-analyst",
+    "cashflow-forecast",
+    "pricing-model",
+    "invoice-draft"
+  ],
+  "requires_packs": ["core"],
+  "min_platform_version": "0.2.0"
+}

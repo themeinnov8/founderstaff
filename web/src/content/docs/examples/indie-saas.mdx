@@ -1,0 +1,209 @@
+---
+title: Indie SaaS
+description: Solo developer shipping a paid product. PRD → build → launch → growth loop, all in the editor.
+---
+
+## The operator
+
+**Sam** is a senior backend dev shipping a niche B2B SaaS (think: "Linear for HVAC dispatchers"). Solo, ~15 hours/week on the side. Goals:
+
+- Ship v1 in 60 days
+- Get to 20 paying customers in 90 days
+- $2k MRR before deciding to go full-time
+
+## Pack selection
+
+```yaml
+packs:
+  - core
+  - product       # PRDs, stories, prioritization
+  - research      # customer interviews, market sanity-check
+  - content       # launch + ongoing
+  - marketing     # positioning + landing + ad copy
+  - finance       # pricing model + unit economics
+```
+
+Skipping `sales` (PLG motion) and `delivery` (no client work). `compliance` optional — Sam is solo without a day-job firewall need.
+
+## Roster
+
+```
+/instantiate-agent chief-of-staff
+/instantiate-agent roster-manager
+
+/instantiate-agent product-manager
+/instantiate-agent research-analyst
+
+/instantiate-agent brand-strategist
+/instantiate-agent growth-marketer
+
+/instantiate-agent content-creator
+/instantiate-agent blog-publisher
+
+/instantiate-agent finance-analyst
+```
+
+9 agents — leaner than the consulting example, focused on build + launch.
+
+## Rhythms
+
+```bash
+/schedule chief-of-staff daily at=08:00 prompt=/next-best-action
+
+# product cadence
+/schedule product-manager weekly day=monday prompt="/feature-prioritize backlog"
+
+# launch prep (manual until launch week)
+/schedule brand-strategist,growth-marketer,product-manager manual prompt="/council launch-readiness"
+
+# pre-launch: weekly customer interviews
+/schedule research-analyst weekly day=thursday prompt="/customer-interview"
+
+# content: blog every 2 weeks pre-launch, weekly post-launch
+/schedule blog-publisher every_n_days n=14 prompt="/blog-article topic=from-this-sprints-learnings"
+
+# weekly review
+/schedule operations-manager weekly day=sunday prompt=/weekly-review
+
+# monthly finance
+/schedule finance-analyst monthly day=1 prompt="/cashflow-forecast"
+/schedule finance-analyst monthly day=15 prompt="/pricing-model HVAC dispatcher tier"
+```
+
+## Build phase (days 0–60)
+
+### Week 1 — PRD + customer interviews
+
+```
+> @product-manager
+> /prd-draft product="HVAC dispatcher tool" core-problem="dispatchers juggle 4 tabs to assign jobs"
+```
+
+Produces lightweight PRD in `04-product/prds/hvac-dispatcher-v1.md`. Includes:
+- Problem statement
+- One core user story
+- Scope (4 features)
+- Non-goals (8 things explicitly out)
+- Kill criterion ("if fewer than 5% of trial users assign a job in week 1, kill")
+
+```
+> /user-story break down the PRD into shippable stories
+```
+
+8 stories, each with observable acceptance criteria, in `04-product/stories/`.
+
+```
+> @research-analyst
+> /customer-interview prepare for 5 dispatcher calls next week
+```
+
+Interview script (Mom-Test compliant — no leading questions) in `02-research/interviews/dispatcher-discovery.md`. Sam books 5 calls.
+
+### Weeks 2–6 — build, validate, iterate
+
+Daily `/next-best-action` chooses between: code, interview, refine PRD. Friday `/weekly-status` reconciles hours.
+
+After every 2 customer calls:
+
+```
+> @research-analyst
+> /customer-interview synthesize last 2 calls
+```
+
+Updates `02-research/interviews/synthesis.md`. Surfaces patterns; product-manager reads these before next `/feature-prioritize`.
+
+### Week 5 — positioning
+
+```
+> @brand-strategist
+> /positioning-statement using interview synthesis as input
+```
+
+For-Who-Is statement + supporting brief in `06-marketing/positioning.md`.
+
+```
+> /landing-page from positioning + the PRD's one core story
+```
+
+Landing copy (not HTML) — Sam wires it into his landing page template.
+
+### Week 7 — launch readiness council
+
+```
+> /run-due --manual launch-readiness
+```
+
+3-agent council convenes. Round 1: independent takes. Round 2: cross-read. Synthesis:
+
+```
+Decisions:
+- DECISION 1: Launch on ProductHunt Tuesday (HVAC-trade subreddit-friendly day)
+- DECISION 2: Free 14-day trial, no credit card
+
+Action items:
+- [ ] Finalize landing page copy — owner: brand-strategist — due: Saturday
+- [ ] Draft launch blog + LinkedIn carousel — owner: content-creator — due: Sunday
+- [ ] Validate pricing tier — owner: finance-analyst — due: Saturday
+
+Open disagreement:
+- Pricing — finance-analyst wants $49/seat anchor; brand-strategist wants $29 to win logos
+```
+
+Sam decides (logged as ADR in `09-meta/decisions/`), then:
+
+```
+> /launch-playbook for ProductHunt Tuesday
+```
+
+T-minus checklist; Sam works through it.
+
+## Launch + growth phase (days 60–90)
+
+### Daily
+
+`/next-best-action` shifts emphasis from build → customer success + growth experiments.
+
+### Weekly growth loop
+
+```
+> @growth-marketer
+> Based on this week's analytics + signups, what's the highest-leverage experiment for next week?
+```
+
+`growth-marketer` proposes 1 experiment (not 5) with measurable hypothesis.
+
+### Pricing iteration
+
+```
+> /pricing-model based on first 10 customers' usage patterns
+```
+
+`finance-analyst` produces price-band (floor/anchor/stretch) with unit-economics check. Sam either holds or adjusts.
+
+### Content cadence
+
+```
+> @blog-publisher
+> /blog-article topic="how we built X" from sprint notes
+```
+
+Two posts a month, deep + honest. `growth-marketer` repurposes via `/repurpose-content`.
+
+## Failure modes
+
+| Symptom | Fix |
+|---|---|
+| `/feature-prioritize` keeps producing same top-3 | PRD is stale or kill-criterion hit; revisit PRD |
+| Customer interviews not surfacing new patterns | Switch interview audience or push deeper (`/customer-interview synthesize + propose 5 follow-up questions`) |
+| Pricing model conflicting with brand strategist's anchor | Convene 2-agent council `finance-analyst,brand-strategist` |
+| Content cadence slipping | Drop frequency rather than skip quality — `weekly` → `every_n_days n=10` |
+
+## 90-day outcomes
+
+- **Product**: v1 shipped, 8 customer-driven features in v1.1
+- **Customers**: 20–30 paid, 50–80 trials
+- **MRR**: ~$2k (mix of $29 + $49 tiers)
+- **Content**: 6 blog posts, 1 launch carousel, ongoing weekly LinkedIn
+- **Decisions logged**: ~15 ADRs, including the pricing tier reasoning
+
+Sam decides to go full-time at ~$3k MRR with 3 months runway saved.

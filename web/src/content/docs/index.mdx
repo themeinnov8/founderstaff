@@ -1,0 +1,80 @@
+---
+title: Welcome to founderstaff
+description: An operating system for founders. 75 agentic skills across 10 packs. Works in Claude Code and GitHub Copilot.
+template: splash
+hero:
+  tagline: 75 agentic skills · 10 packs · works in Claude Code & GitHub Copilot
+  image:
+    file: ../../assets/logo.svg
+  actions:
+    - text: Get started with Claude Code
+      link: /getting-started/claude-code/
+      icon: right-arrow
+      variant: primary
+    - text: Browse agents
+      link: /agents/
+      icon: external
+    - text: View on GitHub
+      link: https://github.com/themeinnov8/founderstaff
+      icon: github
+      variant: minimal
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+## Why this exists
+
+Most founders fail at **execution**, not ideas. They lose to:
+
+- **Decision fatigue** — too many small choices, not enough cognitive budget.
+- **Scattered state** — plan in Notion, leads in a spreadsheet, content in drafts, decisions in their head.
+- **Solo blind spots** — no chief of staff, no red-teamer, no research analyst.
+- **Compliance drift** — especially when running a venture alongside a day job.
+
+**founderstaff turns your editor into a roster of AI co-workers**, all reading the same workspace, all guardrailed, all on schedule.
+
+## Start here
+
+<CardGrid>
+  <Card title="Concepts" icon="open-book">
+    Skills, packs, rhythms, councils. The mental model in 5 minutes.
+    [Read concepts →](/getting-started/concepts/)
+  </Card>
+  <Card title="Claude Code walkthrough" icon="rocket">
+    From `git clone` to running your first rhythm in Claude Code.
+    [Start the walkthrough →](/getting-started/claude-code/)
+  </Card>
+  <Card title="GitHub Copilot setup" icon="seti:github">
+    Same skills, same source — installed for VS Code Copilot.
+    [Copilot setup →](/getting-started/github-copilot/)
+  </Card>
+  <Card title="Real-world examples" icon="document">
+    Four end-to-end builds: consultancy, SaaS, content, services.
+    [Browse examples →](/examples/)
+  </Card>
+</CardGrid>
+
+## What's in the box
+
+| Pack | Skills | What it does |
+|---|---|---|
+| [Core](/agents/core/) | 18 | Chief of staff, dashboard, hiring, roster, rhythms. Always installed. |
+| [Research](/agents/research/) | 7 | Citation-disciplined market & customer research, fact-checking, red-team. |
+| [Content](/agents/content/) | 12 | Blog, LinkedIn, newsletter, YouTube, SEO, repurpose. |
+| [Sales](/agents/sales/) | 9 | Outreach, discovery, proposals, objection handling. |
+| [Marketing](/agents/marketing/) | 6 | Positioning, launches, landing pages, ad copy. |
+| [Operations](/agents/operations/) | 6 | SOPs, meeting notes, inbox triage, weekly review. |
+| [Delivery](/agents/delivery/) | 7 | Client scaffolding, briefs, status updates, case studies. |
+| [Compliance](/agents/compliance/) | 2 | Pre-publish gate. Firewall + conflicts + DNC enforcement. |
+| [Finance](/agents/finance/) | 4 | Cashflow, pricing, unit economics, invoicing. |
+| [Product](/agents/product/) | 4 | PRDs, user stories, prioritization (RICE / WSJF). |
+
+## Design principles
+
+1. **Time-first, revenue-second.** Default config assumes 5–10 hours/week.
+2. **Cheap markdown, rich HTML.** State in MD. Visualizations regenerated on demand.
+3. **Scoped agents.** Every chatmode declares read/write scope. No unrestricted access.
+4. **Compliance baseline.** Day-job firewall, citation discipline, decisions logged.
+5. **Never invent.** Research guardrails refuse fabrication.
+6. **One next action.** `@chief-of-staff` returns ONE action with reasoning, never a buffet.
+7. **Self-evolution as code.** New skills check in as PRs.

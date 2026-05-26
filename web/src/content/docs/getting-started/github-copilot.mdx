@@ -1,0 +1,118 @@
+---
+title: Get started with GitHub Copilot
+description: Install founderstaff skills into a VS Code workspace for GitHub Copilot.
+---
+
+import { Steps, Aside } from '@astrojs/starlight/components';
+
+If you prefer VS Code with GitHub Copilot over a CLI agent, this is the path. Same skills, same source — different target directory.
+
+## Prerequisites
+
+| Tool | Min version | Verify |
+|---|---|---|
+| Python | 3.10+ | `python --version` |
+| Git | 2.30+ | `git --version` |
+| VS Code | 1.90+ | `code --version` |
+| GitHub Copilot + Copilot Chat | latest | install from VS Code Marketplace, sign in |
+
+## Steps
+
+<Steps>
+
+1. Create the workspace.
+
+   ```bash
+   mkdir my-venture && cd my-venture
+   git init
+   ```
+
+2. Bootstrap `.platform/`.
+
+   ```bash
+   git clone https://github.com/themeinnov8/founderstaff.git ~/founderstaff
+   mkdir .platform
+   cp ~/founderstaff/scaffolding/.platform/relearn.py                    .platform/
+   cp ~/founderstaff/scaffolding/.platform/skills.manifest.yaml          .platform/
+   cp ~/founderstaff/scaffolding/.platform/platform.config.json.template .platform/platform.config.json
+   ```
+
+3. Edit `.platform/platform.config.json` with your `BRAND`, `OPERATOR`, `EMPLOYER`.
+
+4. Pick packs in `.platform/skills.manifest.yaml`:
+
+   ```yaml
+   packs:
+     - core
+     - research
+     - content
+   ```
+
+5. Install for Copilot (the default target).
+
+   ```bash
+   python .platform/relearn.py
+   # or equivalently
+   python .platform/relearn.py --target copilot
+   ```
+
+6. Open VS Code in this folder.
+
+   ```bash
+   code .
+   ```
+
+   Copilot Chat auto-discovers `.github/{chatmodes,prompts,instructions}/`. No restart needed.
+
+7. Activate your first agent.
+
+   In Copilot Chat:
+
+   ```
+   /instantiate-agent chief-of-staff
+   ```
+
+8. Use it.
+
+   ```
+   @chief-of-staff what's the most important thing for me to do today?
+   ```
+
+</Steps>
+
+## How it lands
+
+```
+my-venture/
+├── .platform/
+├── .github/
+│   ├── chatmodes/
+│   │   ├── chief-of-staff.chatmode.md
+│   │   └── ...
+│   ├── prompts/
+│   │   ├── next-best-action.prompt.md
+│   │   └── ...
+│   └── instructions/
+│       ├── research-quality.instructions.md
+│       └── ...
+```
+
+Copilot reads frontmatter and registers each file as either a chatmode, slash command, or always-on instruction (scoped by `applyTo:`).
+
+<Aside type="note" title="Cross-host parity">
+Everything that works in Claude Code works in Copilot and vice-versa. The skill *content* is identical. Only the install target changes. If you switch hosts later, run `python .platform/relearn.py --target <new>` and everything re-installs in the right place.
+</Aside>
+
+## Day-2 is identical
+
+See the [Claude Code walkthrough → Day-2 commands](/getting-started/claude-code/#day-2-commands). Same commands, same outputs.
+
+## Multi-host teams
+
+If different team members use different editors, install both targets:
+
+```bash
+python .platform/relearn.py --target both
+```
+
+Then commit both `.github/` and `.claude/`. Each operator's editor picks up only the files it understands.

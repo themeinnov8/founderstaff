@@ -1,0 +1,17 @@
+# founderstaff platform manifest for THIS workspace.
+# Edit packs / extra_skills to change what gets installed.
+# Run `python .platform/relearn.py` (or `python <path-to-founderstaff>/scripts/sync.py`) to apply.
+
+upstream: https://github.com/themeinnov8/founderstaff.git
+branch: main
+platform_version: latest
+
+packs:
+  - core
+  - research
+
+extra_skills: []
+
+disabled_skills: []
+
+tokens_file: platform.config.json

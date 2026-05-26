@@ -1,0 +1,148 @@
+---
+title: Concepts
+description: The mental model — skills, packs, rhythms, councils, hosts.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+founderstaff is a **package manager for AI skills** plus a **runtime for scheduled agent rhythms**. If you've used npm or pip, the mental model maps directly.
+
+## The mapping
+
+| npm / pip | founderstaff |
+|---|---|
+| package | **skill** (one chatmode, prompt, or instructions file) |
+| meta-package | **pack** (curated bundle of skills, e.g., `core`, `research`) |
+| `package.json` | `.platform/skills.manifest.yaml` (what your workspace wants) |
+| `package-lock.json` | `.platform/skills.lock.json` (what's installed + hashes) |
+| registry | `skills/index.json` in the [upstream repo](https://github.com/themeinnov8/founderstaff) |
+| `npm install` | `python .platform/relearn.py` |
+| `npm publish` | PR adding files under `skills/` + entries in `index.json` |
+
+## Core nouns
+
+### Skill
+
+The atomic unit. One file. Three types:
+
+| Type | File | Maps to |
+|---|---|---|
+| **Chatmode** | `*.chatmode.md` | A persistent persona (e.g., `@chief-of-staff`) with declared tools and scope |
+| **Prompt** | `*.prompt.md` | A slash command (e.g., `/next-best-action`) — one-shot, contracted |
+| **Instructions** | `*.instructions.md` | Always-on guardrails scoped by glob (`applyTo: "03-content/**"`) |
+
+Every skill has YAML frontmatter declaring its description, tools (for chatmodes), or scope (for instructions). The body is the system prompt.
+
+### Pack
+
+A pack is a named bundle of related skills. `core` is always installed. Others are opt-in:
+
+```yaml
+# .platform/skills.manifest.yaml
+packs:
+  - core
+  - research
+  - content
+  - sales
+```
+
+Packs declare their own version. Pack versions bump independently of platform.
+
+### Roster
+
+The subset of installed chatmodes you've **activated as staff**. Most users install a pack but only activate a few of its agents.
+
+```json
+// 09-meta/roster.json
+{
+  "agents": [
+    { "id": "chief-of-staff", "role": "Daily NBA driver", "activated": "2026-05-24" },
+    { "id": "research-analyst", "role": "Citation-disciplined research", "activated": "2026-05-24" }
+  ]
+}
+```
+
+Manage with `@roster-manager`, `/instantiate-agent`, `/retire-agent`.
+
+### Rhythm
+
+A schedule entry: one or more agents, a cadence, and a prompt to run.
+
+```json
+// 09-meta/rhythms.json
+{
+  "rhythms": [
+    {
+      "id": "daily-nba",
+      "agents": ["chief-of-staff"],
+      "kind": "solo",
+      "cadence": "daily",
+      "at": "09:00",
+      "prompt": "/next-best-action",
+      "last_run": "2026-05-23",
+      "active": true
+    }
+  ]
+}
+```
+
+Cadences (closed set): `daily`, `weekdays`, `weekly` (with `day`), `monthly` (with `day`), `every_n_days` (with `n`), `manual`.
+
+<Aside type="note" title="No daemon">
+There is no background scheduler. "Schedule" means the system computes `next_due` and surfaces what's overdue when you run `/run-due`. All execution is operator-initiated. This is intentional — autonomous fires would violate the platform's "operator owns the loop" principle.
+</Aside>
+
+### Council
+
+A rhythm with `kind: council` and ≥2 agents. They take turns: independent round-1 (no peeking), cross-read round-2 (now you see others), then a coordinator synthesizes decisions, action items, and *preserved* disagreements.
+
+See [Councils](/rhythms/councils/) for the full flow.
+
+### Host
+
+The editor that auto-discovers the installed skills. Two are supported:
+
+| Host | Skills layout | Discovery |
+|---|---|---|
+| **GitHub Copilot** | `.github/{chatmodes,prompts,instructions}/*` | Automatic by Copilot in VS Code |
+| **Claude Code** | `.claude/agents/*` + `.claude/commands/*` + `CLAUDE.md` rules | Automatic by Anthropic's CLI |
+
+Both render from the same `skills/` source. Pick at install time:
+
+```bash
+python relearn.py --target claude     # Claude Code only
+python relearn.py --target copilot    # GitHub Copilot only
+python relearn.py --target both       # Both (for teams mixing editors)
+```
+
+## How it all fits
+
+```
+       upstream repo                          your workspace
+   ┌─────────────────────┐               ┌─────────────────────┐
+   │ skills/<pack>/<type>│  git pull     │ .platform/          │
+   │   *.chatmode.md     │ ───────────►  │   manifest.yaml     │
+   │   *.prompt.md       │               │   lock.json         │
+   │   *.instructions.md │               │                     │
+   │ packs/*.pack.json   │   sync.py     │ .claude/agents/     │
+   │ skills/index.json   │ ───────────►  │ .claude/commands/   │
+   └─────────────────────┘               │  OR                 │
+                                         │ .github/chatmodes/  │
+                                         │ .github/prompts/    │
+                                         └─────────────────────┘
+                                                  │
+                                                  ▼
+                                         ┌─────────────────────┐
+                                         │ 09-meta/            │
+                                         │   roster.json       │
+                                         │   rhythms.json      │
+                                         │   rhythms/runs.md   │
+                                         │   dashboard/        │
+                                         └─────────────────────┘
+```
+
+## Next steps
+
+- [Claude Code walkthrough →](/getting-started/claude-code/)
+- [GitHub Copilot walkthrough →](/getting-started/github-copilot/)
+- [Browse the agent library →](/agents/)

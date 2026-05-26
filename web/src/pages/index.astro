@@ -1,0 +1,399 @@
+---
+import '../styles/global.css';
+const site = 'https://founderstaff.com';
+const repo = 'https://github.com/themeinnov8/founderstaff';
+const packs = [
+  { id: 'core', name: 'Core', skills: 18, desc: 'Chief of staff, dashboard, hiring, roster, rhythms.' },
+  { id: 'research', name: 'Research', skills: 7, desc: 'Citation-disciplined market, customer, fact-checking.' },
+  { id: 'content', name: 'Content', skills: 12, desc: 'Blog, LinkedIn, newsletter, YouTube, repurpose.' },
+  { id: 'sales', name: 'Sales', skills: 9, desc: 'Outreach, discovery, proposals, objections.' },
+  { id: 'marketing', name: 'Marketing', skills: 6, desc: 'Positioning, launches, landing pages, ad copy.' },
+  { id: 'operations', name: 'Operations', skills: 6, desc: 'SOPs, meeting notes, inbox triage, weekly review.' },
+  { id: 'delivery', name: 'Delivery', skills: 7, desc: 'Client scaffolding, briefs, status, case studies.' },
+  { id: 'compliance', name: 'Compliance', skills: 2, desc: 'Pre-publish gate. Firewall, conflicts, DNC.' },
+  { id: 'finance', name: 'Finance', skills: 4, desc: 'Cashflow, pricing, unit economics, invoicing.' },
+  { id: 'product', name: 'Product', skills: 4, desc: 'PRDs, user stories, prioritization (RICE/WSJF).' },
+];
+---
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>founderstaff — An operating system for founders</title>
+    <meta
+      name="description"
+      content="Clone a working business OS. 75 agentic skills across 10 packs. Works in Claude Code and GitHub Copilot. Self-evolving."
+    />
+    <meta property="og:title" content="founderstaff — An operating system for founders" />
+    <meta property="og:description" content="75 agentic skills. 10 packs. Works in Claude Code + GitHub Copilot." />
+    <meta property="og:url" content={site} />
+    <meta property="og:type" content="website" />
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #09090b;
+        --bg-2: #0c0a14;
+        --fg: #fafafa;
+        --muted: #a1a1aa;
+        --border: #27272a;
+        --accent: #7c3aed;
+        --accent-2: #0ea5e9;
+        --grad: linear-gradient(135deg, #7c3aed 0%, #0ea5e9 100%);
+        --grad-text: linear-gradient(135deg, #c4b5fd 0%, #7dd3fc 100%);
+      }
+      * { box-sizing: border-box; }
+      html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif; -webkit-font-smoothing: antialiased; }
+      a { color: inherit; text-decoration: none; }
+      .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+      /* Nav */
+      nav.top { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(12px); background: rgba(9, 9, 11, 0.7); border-bottom: 1px solid var(--border); }
+      nav.top .row { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+      nav.top .brand { display: flex; align-items: center; gap: 12px; font-weight: 700; }
+      nav.top .brand img { width: 32px; height: 32px; }
+      nav.top .links { display: flex; gap: 32px; font-size: 14px; color: var(--muted); }
+      nav.top .links a:hover { color: var(--fg); }
+      nav.top .cta { display: flex; gap: 12px; }
+      .btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; border-radius: 8px; font-size: 14px; font-weight: 600; transition: transform 0.15s, opacity 0.15s; cursor: pointer; border: none; }
+      .btn:hover { transform: translateY(-1px); }
+      .btn-primary { background: var(--grad); color: white; }
+      .btn-ghost { background: transparent; color: var(--fg); border: 1px solid var(--border); }
+      .btn-ghost:hover { border-color: var(--accent-2); }
+
+      /* Hero */
+      .hero { padding: 120px 0 80px; text-align: center; position: relative; overflow: hidden; }
+      .hero::before { content: ''; position: absolute; top: -200px; left: 50%; transform: translateX(-50%); width: 800px; height: 800px; background: radial-gradient(circle, rgba(124, 58, 237, 0.15) 0%, transparent 70%); pointer-events: none; }
+      .pill { display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border: 1px solid var(--border); border-radius: 999px; font-size: 13px; color: var(--muted); margin-bottom: 32px; }
+      .pill .dot { width: 6px; height: 6px; background: #10b981; border-radius: 50%; }
+      h1 { font-size: clamp(40px, 7vw, 72px); line-height: 1.05; letter-spacing: -0.025em; margin: 0 0 24px; font-weight: 800; }
+      h1 .grad { background: var(--grad-text); -webkit-background-clip: text; background-clip: text; color: transparent; }
+      .hero p.lead { font-size: 20px; color: var(--muted); max-width: 700px; margin: 0 auto 40px; line-height: 1.5; }
+      .hero .cta-row { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+      .hero .meta { margin-top: 56px; display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; color: var(--muted); font-size: 14px; }
+      .hero .meta .stat strong { color: var(--fg); font-size: 18px; display: block; margin-bottom: 2px; }
+
+      /* Section */
+      section { padding: 80px 0; border-top: 1px solid var(--border); }
+      .section-head { text-align: center; margin-bottom: 56px; }
+      .section-head .eyebrow { font-size: 13px; color: var(--accent-2); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 12px; }
+      .section-head h2 { font-size: clamp(28px, 4vw, 44px); margin: 0 0 16px; letter-spacing: -0.02em; font-weight: 700; }
+      .section-head p { color: var(--muted); font-size: 18px; max-width: 640px; margin: 0 auto; }
+
+      /* Features */
+      .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+      .feature { background: var(--bg-2); border: 1px solid var(--border); border-radius: 14px; padding: 32px; transition: border-color 0.2s; }
+      .feature:hover { border-color: var(--accent); }
+      .feature .icon { width: 44px; height: 44px; border-radius: 10px; background: var(--grad); display: grid; place-items: center; margin-bottom: 20px; font-size: 22px; }
+      .feature h3 { margin: 0 0 10px; font-size: 18px; font-weight: 700; }
+      .feature p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.6; }
+
+      /* Steps */
+      .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; counter-reset: stepc; }
+      .step { background: var(--bg-2); border: 1px solid var(--border); border-radius: 12px; padding: 28px; counter-increment: stepc; position: relative; }
+      .step::before { content: counter(stepc); position: absolute; top: 24px; right: 24px; width: 32px; height: 32px; border-radius: 8px; background: var(--grad); color: white; font-weight: 700; display: grid; place-items: center; font-size: 14px; }
+      .step h4 { margin: 0 0 12px; font-size: 16px; padding-right: 48px; }
+      .step p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.55; }
+      .step code { background: rgba(124, 58, 237, 0.15); color: #c4b5fd; padding: 2px 6px; border-radius: 4px; font-size: 12px; font-family: ui-monospace, 'JetBrains Mono', monospace; }
+
+      /* Packs grid */
+      .packs { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; }
+      .pack { background: var(--bg-2); border: 1px solid var(--border); border-radius: 12px; padding: 24px; transition: transform 0.15s, border-color 0.15s; }
+      .pack:hover { transform: translateY(-2px); border-color: var(--accent-2); }
+      .pack .head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 8px; }
+      .pack .head h4 { margin: 0; font-size: 16px; font-weight: 700; text-transform: capitalize; }
+      .pack .head .count { color: var(--accent-2); font-size: 13px; font-weight: 600; }
+      .pack p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.55; }
+
+      /* Code block */
+      .code-row { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: center; }
+      @media (max-width: 900px) { .code-row { grid-template-columns: 1fr; } }
+      .code-row .text h2 { font-size: clamp(24px, 3vw, 36px); margin: 0 0 16px; letter-spacing: -0.02em; }
+      .code-row .text p { color: var(--muted); font-size: 16px; line-height: 1.65; margin: 0 0 24px; }
+      .code-row .text ul { color: var(--muted); padding-left: 20px; line-height: 1.8; }
+      .code-row .text ul li strong { color: var(--fg); }
+      .code-block { background: #0a0a0f; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+      .code-block .head { background: #111119; padding: 10px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--muted); font-family: ui-monospace, monospace; }
+      .code-block .head .dot { width: 10px; height: 10px; border-radius: 50%; }
+      .code-block .head .r { background: #f87171; } .code-block .head .y { background: #fbbf24; } .code-block .head .g { background: #4ade80; }
+      .code-block pre { margin: 0; padding: 20px; overflow-x: auto; font-family: ui-monospace, 'JetBrains Mono', monospace; font-size: 13px; line-height: 1.65; color: #d4d4d8; }
+      .code-block .c { color: #71717a; } .code-block .k { color: #c4b5fd; } .code-block .s { color: #86efac; } .code-block .p { color: #7dd3fc; }
+
+      /* Hosts row */
+      .hosts { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+      @media (max-width: 700px) { .hosts { grid-template-columns: 1fr; } }
+      .host { background: var(--bg-2); border: 1px solid var(--border); border-radius: 14px; padding: 32px; }
+      .host h3 { margin: 0 0 8px; font-size: 20px; display: flex; align-items: center; gap: 12px; }
+      .host h3 .badge { font-size: 11px; padding: 3px 10px; background: rgba(124, 58, 237, 0.2); color: #c4b5fd; border-radius: 999px; font-weight: 600; }
+      .host p.sub { color: var(--muted); margin: 0 0 16px; font-size: 14px; }
+      .host code { display: block; background: #0a0a0f; padding: 12px 16px; border-radius: 8px; font-family: ui-monospace, monospace; font-size: 13px; color: #86efac; border: 1px solid var(--border); margin-bottom: 12px; overflow-x: auto; }
+
+      /* CTA section */
+      .cta-section { text-align: center; background: linear-gradient(135deg, rgba(124, 58, 237, 0.08), rgba(14, 165, 233, 0.08)); border-radius: 20px; padding: 64px 32px; margin: 0 24px; }
+      .cta-section h2 { font-size: clamp(28px, 4vw, 40px); margin: 0 0 16px; letter-spacing: -0.02em; }
+      .cta-section p { color: var(--muted); font-size: 17px; margin: 0 0 32px; }
+
+      /* Footer */
+      footer { border-top: 1px solid var(--border); padding: 48px 0 32px; color: var(--muted); font-size: 14px; }
+      footer .grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 32px; margin-bottom: 32px; }
+      @media (max-width: 700px) { footer .grid { grid-template-columns: 1fr 1fr; } }
+      footer h5 { color: var(--fg); font-size: 13px; text-transform: uppercase; letter-spacing: 0.1em; margin: 0 0 16px; }
+      footer ul { list-style: none; padding: 0; margin: 0; line-height: 2.2; }
+      footer ul a:hover { color: var(--accent-2); }
+      footer .credit { text-align: center; padding-top: 24px; border-top: 1px solid var(--border); font-size: 13px; }
+    </style>
+  </head>
+  <body>
+    <nav class="top">
+      <div class="container row">
+        <a class="brand" href="/">
+          <img src="/favicon.svg" alt="" />
+          <span>founderstaff</span>
+        </a>
+        <div class="links">
+          <a href="/getting-started/concepts/">Docs</a>
+          <a href="/agents/">Agents</a>
+          <a href="/examples/">Examples</a>
+          <a href={repo}>GitHub</a>
+        </div>
+        <div class="cta">
+          <a class="btn btn-ghost" href={repo}>Star on GitHub</a>
+          <a class="btn btn-primary" href="/getting-started/claude-code/">Get started →</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero -->
+    <header class="hero">
+      <div class="container">
+        <div class="pill"><span class="dot"></span> v0.3.0-alpha · 75 skills · 10 packs</div>
+        <h1>An operating system<br /><span class="grad">for founders.</span></h1>
+        <p class="lead">
+          Clone a working business OS. 75 agentic skills across 10 packs. Hire, schedule, and run a team of AI co-workers — all from your editor. Works in <strong style="color:var(--fg)">Claude Code</strong> and <strong style="color:var(--fg)">GitHub Copilot</strong>.
+        </p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="/getting-started/claude-code/">Get started in 5 minutes →</a>
+          <a class="btn btn-ghost" href="/examples/">See real examples</a>
+        </div>
+        <div class="meta">
+          <div class="stat"><strong>75</strong>agentic skills</div>
+          <div class="stat"><strong>10</strong>packs</div>
+          <div class="stat"><strong>2</strong>host editors</div>
+          <div class="stat"><strong>MIT</strong>open source</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Why -->
+    <section>
+      <div class="container">
+        <div class="section-head">
+          <div class="eyebrow">Why founderstaff</div>
+          <h2>Most founders don't fail at ideas.<br />They fail at execution.</h2>
+          <p>Decision fatigue. Scattered state. Solo blind spots. Compliance drift. founderstaff turns your editor into a chief-of-staff plus a research analyst plus a content creator plus a sales coach — all reading the same workspace, all guardrailed.</p>
+        </div>
+        <div class="features">
+          <div class="feature">
+            <div class="icon">🧠</div>
+            <h3>Agentic, not chatty</h3>
+            <p>Every chatmode declares its tools. Every prompt has a contract. Operators get one next action, not a buffet.</p>
+          </div>
+          <div class="feature">
+            <div class="icon">📦</div>
+            <h3>Packs you opt into</h3>
+            <p>Core is always on. Add research, content, sales, marketing, operations, delivery, compliance, finance, or product as you need them.</p>
+          </div>
+          <div class="feature">
+            <div class="icon">🔁</div>
+            <h3>Rhythms & councils</h3>
+            <p>Schedule daily, weekly, or monthly invocations. Run multi-agent councils for cross-functional decisions.</p>
+          </div>
+          <div class="feature">
+            <div class="icon">🛡️</div>
+            <h3>Compliance baked in</h3>
+            <p>Pre-publish gate. Day-job firewall. Citation discipline. Decisions logged. Local edits respected.</p>
+          </div>
+          <div class="feature">
+            <div class="icon">🎯</div>
+            <h3>Selective hiring</h3>
+            <p>The <code>@hiring-manager</code> refuses to forge new skills without a MECE-passing triage and operator confirmation. No skill bloat.</p>
+          </div>
+          <div class="feature">
+            <div class="icon">🔌</div>
+            <h3>One source, two hosts</h3>
+            <p>Same skill files render to <code>.github/</code> for Copilot or <code>.claude/</code> for Claude Code. Pick your editor.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How it works -->
+    <section>
+      <div class="container">
+        <div class="section-head">
+          <div class="eyebrow">How it works</div>
+          <h2>From idea to working OS in 4 steps</h2>
+        </div>
+        <div class="steps">
+          <div class="step">
+            <h4>Clone the platform</h4>
+            <p>One <code>git clone</code> + one <code>python relearn.py</code>. No package install. Stdlib only.</p>
+          </div>
+          <div class="step">
+            <h4>Pick your packs</h4>
+            <p>Core is required. Add <code>research</code>, <code>content</code>, <code>sales</code> — whatever your venture needs.</p>
+          </div>
+          <div class="step">
+            <h4>Instantiate your roster</h4>
+            <p><code>/instantiate-agent chief-of-staff</code>. Activate the agents you actually want.</p>
+          </div>
+          <div class="step">
+            <h4>Set rhythms, run councils</h4>
+            <p>Schedule daily standups. Convene a strategy council. Operate.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Packs -->
+    <section>
+      <div class="container">
+        <div class="section-head">
+          <div class="eyebrow">The library</div>
+          <h2>10 packs. 75 skills. All agentic.</h2>
+          <p>Each pack is a curated team of chatmodes, slash-command prompts, and guardrail instructions. Install what you need, ignore the rest.</p>
+        </div>
+        <div class="packs">
+          {packs.map((p) => (
+            <a class="pack" href={`/agents/${p.id}/`}>
+              <div class="head"><h4>{p.name}</h4><span class="count">{p.skills}</span></div>
+              <p>{p.desc}</p>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Hosts -->
+    <section>
+      <div class="container">
+        <div class="section-head">
+          <div class="eyebrow">Two editors, same skills</div>
+          <h2>Unified across hosts</h2>
+          <p>One skill source of truth. The sync engine renders to the right layout for your editor.</p>
+        </div>
+        <div class="hosts">
+          <div class="host">
+            <h3>Claude Code <span class="badge">recommended</span></h3>
+            <p class="sub">Skills become <code>.claude/agents/</code> (subagents) and <code>.claude/commands/</code> (slash commands).</p>
+            <code>python relearn.py --target claude</code>
+            <p style="font-size:13px;color:var(--muted);margin:0">Best for terminal-first operators. Anthropic's CLI agent.</p>
+          </div>
+          <div class="host">
+            <h3>GitHub Copilot</h3>
+            <p class="sub">Skills become <code>.github/chatmodes/</code> and <code>.github/prompts/</code>.</p>
+            <code>python relearn.py --target copilot</code>
+            <p style="font-size:13px;color:var(--muted);margin:0">Best for VS Code-native workflows.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Code preview -->
+    <section>
+      <div class="container">
+        <div class="code-row">
+          <div class="text">
+            <h2>One command. Full team on staff.</h2>
+            <p>founderstaff installs as Python stdlib. No deps, no virtualenv, no package manager. Just <code>git pull</code> + render.</p>
+            <ul>
+              <li><strong>Path translation:</strong> pack-first source → flat <code>.github/</code> or <code>.claude/</code> targets.</li>
+              <li><strong>Selective installs</strong> via packs + extra-skills + disabled-skills.</li>
+              <li><strong>Token substitution:</strong> <code>{`{{BRAND}}`}</code>, <code>{`{{OPERATOR}}`}</code>, <code>{`{{EMPLOYER}}`}</code>.</li>
+              <li><strong>Local edits respected</strong> via hash-checked lockfile.</li>
+            </ul>
+          </div>
+          <div class="code-block">
+            <div class="head">
+              <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+              <span>terminal</span>
+            </div>
+            <pre><code><span class="c"># 1. clone and bootstrap</span>
+<span class="k">$</span> mkdir my-venture && cd my-venture
+<span class="k">$</span> mkdir .platform && cp ~/founderstaff/scaffolding/.platform/* .platform/
+
+<span class="c"># 2. install core + the packs you want</span>
+<span class="k">$</span> python .platform/relearn.py <span class="p">--pack</span> research <span class="p">--pack</span> content
+
+<span class="s">[relearn] cloning https://github.com/themeinnov8/founderstaff.git</span>
+<span class="s">[founderstaff] syncing 37 skills into my-venture</span>
+<span class="s">  install: chief-of-staff v0.1.0 -> .claude/agents/chief-of-staff.md</span>
+<span class="s">  install: market-research v0.1.0 -> .claude/commands/market-research.md</span>
+<span class="s">  ...</span>
+
+<span class="c"># 3. open Claude Code, instantiate your roster</span>
+<span class="k">$</span> claude
+<span class="p">&gt;</span> /instantiate-agent chief-of-staff
+<span class="p">&gt;</span> /schedule chief-of-staff daily at=09:00 prompt=/next-best-action
+<span class="p">&gt;</span> /run-due</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section style="border-top: 1px solid var(--border);">
+      <div class="container">
+        <div class="cta-section">
+          <h2>Stop being your own chief of staff.</h2>
+          <p>Clone the OS. Pick your packs. Operate.</p>
+          <div class="cta-row" style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
+            <a class="btn btn-primary" href="/getting-started/claude-code/">Get started →</a>
+            <a class="btn btn-ghost" href={repo}>View on GitHub</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="container">
+        <div class="grid">
+          <div>
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;font-weight:700;color:var(--fg)">
+              <img src="/favicon.svg" alt="" width="24" height="24" />
+              founderstaff
+            </div>
+            <p style="max-width:340px;line-height:1.6;margin:0">An operating system for founders. 75 agentic skills. Open source under MIT.</p>
+          </div>
+          <div>
+            <h5>Product</h5>
+            <ul>
+              <li><a href="/getting-started/concepts/">Concepts</a></li>
+              <li><a href="/agents/">Agents</a></li>
+              <li><a href="/rhythms/">Rhythms</a></li>
+              <li><a href="/skills/packs/">Packs</a></li>
+            </ul>
+          </div>
+          <div>
+            <h5>Get started</h5>
+            <ul>
+              <li><a href="/getting-started/claude-code/">Claude Code</a></li>
+              <li><a href="/getting-started/github-copilot/">GitHub Copilot</a></li>
+              <li><a href="/examples/">Examples</a></li>
+            </ul>
+          </div>
+          <div>
+            <h5>Project</h5>
+            <ul>
+              <li><a href={repo}>GitHub</a></li>
+              <li><a href={`${repo}/blob/main/CHANGELOG.md`}>Changelog</a></li>
+              <li><a href={`${repo}/blob/main/LICENSE`}>License (MIT)</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="credit">© 2026 themeinnov8 · founderstaff is MIT-licensed open source.</div>
+      </div>
+    </footer>
+  </body>
+</html>

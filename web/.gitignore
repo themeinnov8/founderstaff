@@ -1,0 +1,19 @@
+# Build output
+dist/
+.astro/
+node_modules/
+
+# Astro
+.cache/
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Env
+.env
+.env.local
+.env.production

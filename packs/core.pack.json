@@ -1,0 +1,29 @@
+{
+  "id": "core",
+  "name": "Core",
+  "summary": "Always-installed. Founder's office, dashboard, agent-forge, hiring-manager, roster + rhythms, logging guardrails.",
+  "version": "0.3.0",
+  "skills": [
+    "chief-of-staff",
+    "next-best-action",
+    "dashboard-generator",
+    "refresh-dashboard",
+    "agent-forge",
+    "forge-agent",
+    "hiring-manager",
+    "hire-skill",
+    "roster-manager",
+    "instantiate-agent",
+    "retire-agent",
+    "schedule",
+    "run-due",
+    "council",
+    "roster-dashboard",
+    "progress-logging",
+    "decision-logging",
+    "rhythms"
+  ],
+  "requires_packs": [],
+  "min_platform_version": "0.3.0",
+  "always_required": true
+}

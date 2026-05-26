@@ -1,0 +1,17 @@
+{
+  "id": "delivery",
+  "name": "Client delivery",
+  "summary": "Client scaffolding, briefs, weekly status, case studies. Confidentiality and IP guardrails.",
+  "version": "0.2.0",
+  "skills": [
+    "delivery-lead",
+    "project-manager",
+    "new-client-scaffold",
+    "client-brief",
+    "weekly-status",
+    "case-study",
+    "client-work"
+  ],
+  "requires_packs": ["core"],
+  "min_platform_version": "0.2.0"
+}

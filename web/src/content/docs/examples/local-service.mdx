@@ -1,0 +1,193 @@
+---
+title: Local Service Business
+description: Non-technical founder (clinic, agency, studio). SOPs, sales hygiene, cashflow visibility — without learning Python.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+## The operator
+
+**Rosa** owns a 6-person physiotherapy clinic. She handles ops, hiring, marketing, and a chunk of patient care. Pain points:
+
+- Patient inquiries fall through cracks (inbox chaos)
+- Same operational questions re-answered every month (no SOPs)
+- Cashflow forecast is "Rosa's intuition" — sometimes scary
+- Wants to add a second location but can't figure out if it's affordable
+
+She doesn't write code. The clinic computer runs Windows. She's comfortable in VS Code because her nephew set it up for her once.
+
+<Aside type="note" title="founderstaff for non-tech founders">
+Rosa's workflow proves the design: zero Python dependencies, no terminal mastery required after setup, every interaction is natural-language chat with named agents. Setup is a one-time `pip`-free, `npm`-free `git clone` + `python relearn.py` — anyone who can install VS Code can do this.
+</Aside>
+
+## Pack selection
+
+```yaml
+packs:
+  - core
+  - sales         # patient outreach + retention
+  - marketing     # local positioning + landing
+  - operations    # SOPs + inbox + weekly review
+  - finance       # cashflow + pricing for new services
+```
+
+Skipping `content` (not a content-led business), `delivery` (no clients in the consultant sense), `research` (limited need), `product` (services, not product).
+
+## Tokens
+
+```json
+{
+  "tokens": {
+    "BRAND": "Marina Physio",
+    "OPERATOR": "Rosa Marquez",
+    "EMPLOYER": ""
+  }
+}
+```
+
+## Roster
+
+```
+/instantiate-agent chief-of-staff
+/instantiate-agent roster-manager
+
+/instantiate-agent operations-manager
+/instantiate-agent sales-coach            # used as "patient outreach coach"
+/instantiate-agent brand-strategist
+/instantiate-agent finance-analyst
+```
+
+6 agents. Tight.
+
+## Rhythms
+
+```bash
+/schedule chief-of-staff daily at=08:30 prompt=/next-best-action
+
+# daily inbox + outreach drafts
+/schedule operations-manager weekdays at=09:00 prompt=/inbox-triage
+
+# weekly hygiene
+/schedule operations-manager weekly day=monday prompt="/sop-author missing SOPs this week"
+/schedule operations-manager weekly day=saturday prompt=/weekly-review
+
+# weekly patient outreach (re-engagement)
+/schedule sales-coach weekly day=tuesday prompt="propose 5 lapsed-patient re-engagement touches"
+
+# monthly finance
+/schedule finance-analyst monthly day=1 prompt="/cashflow-forecast 12-month"
+/schedule finance-analyst monthly day=10 prompt="/pricing-model new sports-injury service"
+
+# quarterly: should-we-open-second-location council
+/schedule chief-of-staff,finance-analyst,brand-strategist manual prompt="/council second-location-feasibility"
+```
+
+## SOP authoring — the highest-leverage skill
+
+Rosa's clinic has a hundred small workflows that live only in her head: how to onboard a new patient, what to say when someone asks about insurance, how to handle a no-show, end-of-day cash reconciliation. Every time she's away or a staffer is new, things slip.
+
+```
+> @operations-manager
+> /sop-author workflow="new patient intake (first visit)"
+```
+
+Returns a structured SOP in `01-operations/sops/new-patient-intake.md`:
+
+- Trigger (when this SOP applies)
+- Inputs needed
+- Step-by-step (numbered, with decision points)
+- Outputs / deliverables
+- Edge cases
+- "If this goes wrong" section
+
+She prints it, laminates it, sticks it next to the front desk. Within 3 months she has 18 SOPs. The clinic runs without her present for the first time.
+
+## Inbox triage — a daily lifesaver
+
+```
+> /run-due
+[1] inbox-triage-weekdays  → /inbox-triage
+```
+
+`y`. She pastes the day's unsorted inbox (forwarded from her email). `@operations-manager` returns:
+
+```
+ACT NOW (3):
+- Patient X confirming Friday appt — draft reply [attached]
+- Insurance form from PatientY — needs your sig, here's what's missing
+- New inquiry: marathon runner with ITB pain — draft reply with booking link [attached]
+
+REPLY LATER (5):
+- [...]
+
+ARCHIVE (12):
+- [...]
+```
+
+She ships the 3 act-now drafts in 10 minutes. Reply-later sits in a parking lot file she reviews end of day.
+
+## Cashflow visibility
+
+```
+> @finance-analyst
+> /cashflow-forecast 12 months
+```
+
+She provides current month revenue, recurring costs, payment terms. Returns:
+
+- 12-month forecast with low/expected/high scenarios
+- Runway in each scenario (months until cash-negative)
+- Top 3 sensitivities (e.g., "if patient throughput drops 15%, runway compresses to 4 months")
+
+Suddenly she can answer "can we afford the second location?" with numbers.
+
+### Second-location council
+
+```
+> /run-due --manual second-location-feasibility
+```
+
+3 agents convene:
+
+- **`finance-analyst`** — runs the model: capex, ramp time to breakeven, hiring costs
+- **`brand-strategist`** — does the second location dilute or extend the brand? Same neighborhood (cannibalize) or different (extend)?
+- **`chief-of-staff`** — does Rosa have the operational bandwidth to oversee two locations given current SOP coverage?
+
+Round 1 (isolated): each gives independent take.
+Round 2 (cross-read): each updates given others.
+Synthesis:
+
+```
+Decisions:
+- DECISION 1: Defer second location by 6 months
+  (decided by: finance-analyst, chief-of-staff; brand-strategist neutral)
+
+Reasoning preserved:
+- finance: current cashflow supports it but only at expected-case; one bad quarter wipes runway
+- chief-of-staff: SOP coverage at 18/30 estimated needed; can't operate hands-off yet
+- brand: brand could carry it; not the blocker
+
+Action items:
+- [ ] Get to 25 SOPs by end of Q3
+- [ ] Build 4-month cash reserve before re-evaluating
+- [ ] Scout 3 candidate locations passively
+```
+
+Rosa logs this as ADR in `09-meta/decisions/2026-06-15-defer-second-location.md`. Six months later she revisits with updated numbers.
+
+## Failure modes
+
+| Symptom | Fix |
+|---|---|
+| Drafts sound too corporate / not like Rosa | Add a voice file (mimic content-creator pattern) with 3 of her actual emails as exemplars |
+| `/inbox-triage` mis-categorizing | Refine the triage rules in `01-operations/inbox-rules.md` (she can edit; agent reads) |
+| Cashflow model feels disconnected from reality | Update `07-finance/inputs.md` monthly with actuals; forecast quality is input-quality |
+| SOPs going stale | Schedule `/sop-author audit existing SOPs for drift` quarterly |
+
+## What this OS produces in 1 year
+
+- **18 → 35 SOPs**; clinic operates 4 weeks/year without Rosa present
+- **Inbox**: zero-fallthrough on patient inquiries; conversion from inquiry → booked appt up ~20%
+- **Cashflow**: monthly forecasts; no surprise tight months
+- **Second location**: opened in Q1 of year 2, profitable in 9 months (vs original "I have no idea" planning)
+- **Time saved**: ~6 hours/week of admin she used to do; spent on patients or family

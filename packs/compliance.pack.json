@@ -1,0 +1,12 @@
+{
+  "id": "compliance",
+  "name": "Compliance & firewall",
+  "summary": "Pre-publish / pre-send compliance gate. Reads firewall + conflicts list and returns pass/flag.",
+  "version": "0.2.0",
+  "skills": [
+    "compliance-reviewer",
+    "compliance-check"
+  ],
+  "requires_packs": ["core"],
+  "min_platform_version": "0.2.0"
+}

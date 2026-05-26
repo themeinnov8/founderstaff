@@ -1,0 +1,208 @@
+---
+title: Content Creator OS
+description: Newsletter + YouTube + LinkedIn operator. Weekly batch, repurpose loop, voice integrity.
+---
+
+## The operator
+
+**Maya** runs a 12k-subscriber newsletter on applied AI, growing a YouTube channel, and posts daily on LinkedIn. Solo. ~20 hours/week (this *is* her job).
+
+Goals:
+- Newsletter to 25k subscribers in 6 months
+- YouTube to 10k subs in 6 months
+- Maintain her writing voice — don't sound AI-generated
+- Stop being the bottleneck for repurposing
+
+## Pack selection
+
+```yaml
+packs:
+  - core
+  - content       # the engine
+  - research      # to source what to write about
+  - marketing     # positioning + ad copy for paid acquisition
+  - operations    # weekly review + SOPs for batched production
+```
+
+Optional: `compliance` if she has sponsor disclosure or affiliate rules.
+
+## Roster
+
+```
+/instantiate-agent chief-of-staff
+/instantiate-agent roster-manager
+
+/instantiate-agent content-creator
+/instantiate-agent blog-publisher
+/instantiate-agent linkedin-ghostwriter
+
+/instantiate-agent research-analyst
+/instantiate-agent fact-check-agent          # wait — not a chatmode, it's a prompt
+```
+
+(Maya catches the error — `/fact-check` is a prompt, not an agent. She skips it.)
+
+```
+/instantiate-agent brand-strategist
+/instantiate-agent growth-marketer
+
+/instantiate-agent operations-manager
+```
+
+8 agents. Heavy on content + brand.
+
+## Tokens
+
+```json
+{
+  "tokens": {
+    "BRAND": "Applied AI Weekly",
+    "OPERATOR": "Maya Patel",
+    "EMPLOYER": ""
+  }
+}
+```
+
+No EMPLOYER → compliance firewall inactive (she's full-time on this).
+
+## Rhythms — batch-oriented
+
+Maya's superpower is **batching**: write the week's content in one or two focused sessions, ship throughout the week.
+
+```bash
+# daily
+/schedule chief-of-staff daily at=07:00 prompt=/next-best-action
+/schedule linkedin-ghostwriter weekdays at=08:00 prompt="/linkedin-post daily insight"
+
+# weekly batch (Sundays)
+/schedule content-creator weekly day=sunday at=09:00 prompt="/newsletter-issue weekly batch"
+/schedule blog-publisher weekly day=sunday at=11:00 prompt="/blog-article topic=this-week's-deep-dive"
+/schedule content-creator weekly day=sunday at=14:00 prompt="/youtube-script next week's video"
+
+# research
+/schedule research-analyst weekly day=wednesday prompt="/market-research signals worth covering next week"
+
+# repurpose (Wednesday)
+/schedule content-creator weekly day=wednesday at=10:00 prompt="/repurpose-content last week's newsletter into 5 LinkedIn posts + 1 carousel"
+
+# growth
+/schedule growth-marketer weekly day=friday prompt="weekly analytics review"
+
+# weekly review
+/schedule operations-manager weekly day=saturday prompt=/weekly-review
+
+# monthly
+/schedule brand-strategist monthly day=1 prompt="/positioning-statement check still-true"
+```
+
+## Voice integrity
+
+The `content-voice.instructions.md` guardrail is critical. Maya adds her own voice rules:
+
+```markdown
+# 03-content/voice-overrides.md
+
+## Banned patterns
+- "delve into"
+- "in today's fast-paced world"
+- "it's important to note that"
+- Em dashes (she uses semicolons)
+
+## Voice anchors
+- 2-3 sentences max per paragraph
+- Concrete > abstract (use a real example, not a category)
+- One memorable phrase per piece (the "tweetable")
+```
+
+This file gets read by `@content-creator`, `@linkedin-ghostwriter`, `@blog-publisher` because it falls under their `applyTo`.
+
+## A week in the life
+
+### Sunday — the batch (4 hours)
+
+```
+> @research-analyst
+> /market-research what AI-applied stories are breaking this week worth covering?
+```
+
+Returns 6 candidates with credibility scoring. Maya picks 3.
+
+```
+> @content-creator
+> Read 02-research/this-week.md and propose: 1 newsletter angle, 1 blog topic, 1 YouTube topic, 7 LinkedIn post angles (one per weekday).
+```
+
+Returns a content plan in `03-content/plans/wk-{date}.md`.
+
+```
+> /newsletter-issue weekly batch
+```
+
+Full newsletter issue. Maya reviews, swaps the lede, adds one personal anecdote.
+
+```
+> @blog-publisher
+> /blog-article topic="<topic from plan>" target=1800-words
+```
+
+Long-form draft. Maya reviews and ships to her CMS.
+
+```
+> /youtube-script next week's video, 8-10 min, talking-head with screen-share cues
+```
+
+Script + B-roll brief + thumbnail concept.
+
+### Monday–Friday — daily ship (15 min each)
+
+`/run-due` each morning:
+
+```
+> /linkedin-post topic="<today's angle from Sunday's plan>"
+```
+
+`@linkedin-ghostwriter` drafts in voice. Maya tweaks 1-2 phrases, posts.
+
+### Wednesday — repurpose (1 hour)
+
+```
+> /repurpose-content source=03-content/newsletter/wk-{date}.md targets=linkedin-posts(5),carousel(1)
+```
+
+Generates derivatives — never re-publishes verbatim. Each derivative is channel-native (LinkedIn = pattern interrupt opener; carousel = visual logic).
+
+### Friday — growth diagnostic (30 min)
+
+```
+> @growth-marketer
+> Read this week's newsletter open rates + LinkedIn impressions + YouTube CTR. What changed?
+```
+
+Returns: 1 hypothesis, 1 experiment for next week (not 5).
+
+### Saturday — review (45 min)
+
+```
+> /weekly-review
+```
+
+Surfaces: writing hours vs admin hours, top-performing piece, voice-drift warnings (if any), next week's batch ready?
+
+## Failure modes
+
+| Symptom | Fix |
+|---|---|
+| Posts starting to feel AI-generated | Voice-overrides file drifted; re-anchor with 3 of her best human-written posts as exemplars |
+| `/repurpose-content` producing same patterns | Add channel-specific instructions; rotate templates monthly |
+| Newsletter cadence slipping | Move batch from Sunday to Saturday; or split into 2x 90-min sessions |
+| Research surfacing same sources | Expand `02-research/sources.md` allow-list; ask `@red-team` to challenge her information diet |
+
+## 6-month outcomes
+
+- Newsletter: 12k → 25k subscribers
+- YouTube: 4k → 11k subscribers
+- LinkedIn: 8k → 22k followers
+- **Hours saved**: previously ~30h/week for the same output. Now ~20h with higher quality.
+- **Voice integrity**: blind-test her old posts vs new posts — readers can't reliably tell which were before/after.
+
+She hires her first human (editor) at the 25k subscriber mark, freeing herself to focus more on YouTube.

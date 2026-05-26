@@ -1,0 +1,17 @@
+{
+  "id": "research",
+  "name": "Research & precision",
+  "summary": "Citation-disciplined market/competitor/audience research, customer interviews, fact-checking, adversarial review.",
+  "version": "0.2.0",
+  "skills": [
+    "research-analyst",
+    "red-team",
+    "market-research",
+    "customer-interview",
+    "fact-check",
+    "red-team-prompt",
+    "research-quality"
+  ],
+  "requires_packs": ["core"],
+  "min_platform_version": "0.2.0"
+}

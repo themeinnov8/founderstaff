@@ -1,0 +1,44 @@
+# Generated workspaces (anything created by the planner lives in sibling repos)
+/generated/
+/*-business-os/
+/*-planning/
+
+# IDE
+.vscode/settings.json
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Secrets
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+
+# Node (if we add tooling)
+node_modules/
+npm-debug.log*
+yarn-error.log*
+
+# Python (if we add tooling)
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Logs
+*.log
+
+# Local notes the maintainers don't want public
+/local/
+NOTES.local.md
+TODO.local.md
+
+web/node_modules/
+web/dist/
+web/.astro/
+

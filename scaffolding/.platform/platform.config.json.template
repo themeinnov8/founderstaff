@@ -1,0 +1,15 @@
+{
+  "$schema_note": "Fill these in once per workspace. Tokens like {{BRAND}} in skill files are replaced at sync time.",
+  "tokens": {
+    "BRAND": "Your Brand Name",
+    "BRAND_SHORT": "brand",
+    "BRAND_DOMAIN": "yourbrand.com",
+    "BRAND_HANDLE": "@yourhandle",
+    "OPERATOR": "Your Name",
+    "EMPLOYER_NAME": "n/a",
+    "EMPLOYER_FIREWALL_STRICTNESS": "low",
+    "HOME_CURRENCY": "USD",
+    "HOURS_PER_WEEK": "10",
+    "ANONYMOUS": "false"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "id": "content",
+  "name": "Content factory",
+  "summary": "Blog, LinkedIn, newsletter, YouTube generation in operator voice. Compliance and fact-check layered.",
+  "version": "0.2.0",
+  "skills": [
+    "content-creator",
+    "blog-publisher",
+    "linkedin-ghostwriter",
+    "blog-article",
+    "linkedin-post",
+    "linkedin-carousel",
+    "newsletter-issue",
+    "youtube-script",
+    "seo-optimize",
+    "repurpose-content",
+    "content-voice",
+    "public-publishing"
+  ],
+  "requires_packs": ["core"],
+  "min_platform_version": "0.2.0"
+}

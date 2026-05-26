@@ -1,0 +1,19 @@
+{
+  "id": "video",
+  "name": "Video creation",
+  "summary": "Faceless YouTube and short-form video pipelines: script → storyboard → voiceover prompt → b-roll plan → thumbnail brief.",
+  "version": "0.0.0-planned",
+  "skills": [],
+  "planned_skills": [
+    "video-script",
+    "video-storyboard",
+    "voiceover-brief",
+    "broll-plan",
+    "shorts-extract",
+    "video-creator"
+  ],
+  "requires_packs": ["core", "content"],
+  "min_platform_version": "0.2.0",
+  "status": "planned for v0.3",
+  "rationale": "Faceless YouTube is a core funnel for many ventures but the workflow is multi-tool and error-prone. Pack will provide opinionated chained prompts that produce a publish-ready package."
+}

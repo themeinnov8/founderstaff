@@ -1,0 +1,16 @@
+{
+  "id": "operations",
+  "name": "Operations",
+  "summary": "SOPs, meeting notes, inbox triage, weekly review. The mechanics that keep the OS running.",
+  "version": "0.2.0",
+  "skills": [
+    "operations-manager",
+    "meeting-notetaker",
+    "sop-author",
+    "meeting-notes",
+    "inbox-triage",
+    "weekly-review"
+  ],
+  "requires_packs": ["core"],
+  "min_platform_version": "0.2.0"
+}

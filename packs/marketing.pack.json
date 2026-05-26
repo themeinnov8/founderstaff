@@ -1,0 +1,16 @@
+{
+  "id": "marketing",
+  "name": "Marketing",
+  "summary": "Positioning, launches, landing pages, paid + organic ad copy.",
+  "version": "0.2.0",
+  "skills": [
+    "brand-strategist",
+    "growth-marketer",
+    "positioning-statement",
+    "launch-playbook",
+    "landing-page",
+    "ad-copy"
+  ],
+  "requires_packs": ["core"],
+  "min_platform_version": "0.2.0"
+}

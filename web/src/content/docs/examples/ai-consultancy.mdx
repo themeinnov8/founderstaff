@@ -1,0 +1,257 @@
+---
+title: AI Consultancy
+description: Solo AI consultant building a practice alongside a day job. Full compliance + delivery + finance + content engine.
+---
+
+import { Steps, Aside } from '@astrojs/starlight/components';
+
+## The operator
+
+**Jane Doe** is a senior data scientist at MegaCorp. She's building an AI consulting practice on evenings and weekends, ~10 hours/week. Goals:
+
+- Land 2 small AI-strategy engagements in 90 days
+- Build a credible LinkedIn/newsletter presence in her voice
+- Never compromise her day job (firewall is critical)
+- Get to $5k/mo retained income before quitting
+
+This is the **flagship use case** for founderstaff.
+
+## Pack selection
+
+```yaml
+# .platform/skills.manifest.yaml
+upstream: https://github.com/themeinnov8/founderstaff.git
+branch: main
+packs:
+  - core
+  - research
+  - content
+  - sales
+  - delivery
+  - compliance     # critical — day-job firewall
+  - finance
+```
+
+Why not `marketing` or `product`? At this stage, Jane is consulting (services), not building (product), and her marketing is primarily content + outreach — `content` and `sales` cover it.
+
+## Tokens
+
+```json
+{
+  "tokens": {
+    "BRAND": "Crisp AI Strategy",
+    "OPERATOR": "Jane Doe",
+    "EMPLOYER": "MegaCorp"
+  }
+}
+```
+
+`EMPLOYER` is what the compliance firewall guards. Any draft that echoes MegaCorp confidential material gets flagged.
+
+## Roster
+
+```
+/instantiate-agent chief-of-staff
+/instantiate-agent roster-manager
+/instantiate-agent dashboard-generator
+
+/instantiate-agent research-analyst
+/instantiate-agent red-team
+
+/instantiate-agent content-creator
+/instantiate-agent linkedin-ghostwriter
+
+/instantiate-agent sales-coach
+/instantiate-agent linkedin-lead-gen
+
+/instantiate-agent delivery-lead
+
+/instantiate-agent compliance-reviewer
+
+/instantiate-agent finance-analyst
+```
+
+**12 agents.** This is on the high end but justified — Jane wears all hats.
+
+## Rhythms
+
+```bash
+# daily driver
+/schedule chief-of-staff daily at=06:30 prompt=/next-best-action
+
+# inbox
+/schedule operations-manager weekdays at=06:45 prompt=/inbox-triage
+# (operations-manager is installed even though pack not in manifest — extra_skills)
+
+# weekly content batch (Sunday for the week ahead)
+/schedule content-creator weekly day=sunday at=09:00 prompt="/newsletter-issue weekly digest"
+/schedule linkedin-ghostwriter weekdays at=07:00 prompt="/linkedin-post daily insight from the week"
+
+# weekly research scan
+/schedule research-analyst weekly day=monday prompt="/market-research scan AI strategy demand signals"
+
+# weekly delivery status
+/schedule delivery-lead weekly day=friday prompt="/weekly-status all clients"
+
+# weekly review
+/schedule operations-manager weekly day=saturday at=10:00 prompt=/weekly-review
+
+# monthly cashflow
+/schedule finance-analyst monthly day=1 prompt="/cashflow-forecast current quarter"
+
+# monthly pipeline council
+/schedule chief-of-staff,sales-coach,delivery-lead monthly day=2 prompt="/council monthly-pipeline-review"
+
+# quarterly strategy council
+/schedule chief-of-staff,brand-strategist,finance-analyst,research-analyst manual prompt="/council quarterly-strategy"
+```
+
+## A week in the life
+
+### Monday morning (45 min)
+
+```
+> /run-due
+```
+
+Output:
+
+```
+DUE TODAY:
+  [1] chief-of-staff-daily        → /next-best-action
+  [2] inbox-triage-weekdays       → /inbox-triage
+  [3] linkedin-daily              → /linkedin-post
+  [4] research-weekly             → /market-research
+  [5] pipeline-monthly (council)  → /council monthly-pipeline-review
+
+OVERDUE:
+  [6] delivery-weekly             → /weekly-status (skipped Friday)
+
+Run all in order? (y/n/select):
+```
+
+Jane picks `select`, runs `[1] [2] [6]` now (45 min), defers the rest to evening.
+
+**Chief of staff** returns:
+
+> Today's one next action: Send the proposal to ProspectX (drafted Friday, sitting in `04-sales/proposals/prospectx-2026-05-24.md`). Reasoning: highest-value open deal, oldest pending action (4 days), prospect signaled urgency. Estimated 15 min including compliance check.
+
+She sends the proposal. Then `/inbox-triage` produces 3 draft replies; she ships 2, archives 8 emails. `/weekly-status` reconciles Friday and surfaces an overdue update to ClientA — she sends that too.
+
+### Tuesday evening (60 min)
+
+```
+> @research-analyst
+> /market-research what are mid-market companies saying about LLM-cost vs LLM-quality tradeoffs in 2026 Q2?
+```
+
+Returns cited research note in `02-research/llm-cost-quality-2026q2.md` with 8 sources, 3 confidence-MEDIUM claims flagged, 2 unknowns.
+
+Jane then:
+
+```
+> @content-creator
+> Read 02-research/llm-cost-quality-2026q2.md. Plan one blog and three LinkedIn posts.
+```
+
+`@content-creator` produces a content brief (doesn't write yet) in `03-content/briefs/llm-cost-quality.md`.
+
+### Wednesday morning (30 min)
+
+```
+> /run-due
+> /linkedin-post topic="why mid-market is rebudgeting LLM spend in 2026Q2"
+```
+
+`linkedin-ghostwriter` drafts the post. `/compliance-check` runs automatically — flags one phrase that's too close to MegaCorp internal terminology. Jane edits, re-runs, passes. Posts.
+
+### Thursday — client work (3 hours)
+
+Outside the OS — actual delivery work. Time-log entry added.
+
+### Friday afternoon (30 min)
+
+```
+> /weekly-status all clients
+```
+
+Returns 3 status entries (one per active client), each reconciled to the time-log, sent as separate emails.
+
+```
+> @sales-coach
+> /discovery-call-prep prospect="LeadCo" call="Mon 10am"
+```
+
+One-page brief in `04-sales/calls/leadco-prep.md`.
+
+### Saturday morning (45 min) — weekly review
+
+```
+> /weekly-review
+```
+
+`operations-manager` reads `09-meta/time-log.md`, `daily-log.md`, `decisions/`, `rhythms/runs.md`. Returns:
+
+- Hours by category (delivery 4h, sales 2h, content 1.5h, admin 1h, learning 1.5h = 10h)
+- Plan deltas (planned to ship 2 blog posts, shipped 1)
+- Carry-forward (research note → blog draft for next week)
+- Stop-doing recommendation (one rhythm hasn't produced value in 4 weeks — propose retire)
+
+She accepts the retire recommendation, runs `/retire-agent <id>` for the unused agent.
+
+### Sunday morning (60 min) — content batch
+
+```
+> @content-creator
+> /newsletter-issue weekly digest
+```
+
+Produces full issue from the week's notes + research. `/compliance-check` passes. Jane edits headline, schedules to send Tuesday.
+
+```
+> /linkedin-carousel topic="LLM cost-quality tradeoff (from this week's research)"
+```
+
+5-slide carousel; she ships Monday.
+
+### Monthly (first weekend of the month)
+
+```
+> /run-due
+[1] cashflow-monthly  → /cashflow-forecast
+[2] pipeline-council  → /council monthly-pipeline-review (3 agents)
+```
+
+She runs `[1]` solo. For `[2]`, she invokes — 5 phases unfold, full transcript in `09-meta/rhythms/councils/2026-06-02-pipeline-monthly.md`. Synthesis: 1 decision (kill stalled-prospect outreach), 3 action items, 1 preserved disagreement (sales-coach wants tighter ICP; delivery-lead wants broader). Jane logs the disagreement as an ADR draft for the quarterly council.
+
+## Dashboard
+
+`/refresh-dashboard` regenerates `09-meta/dashboard/index.html` weekly. Jane opens it Saturday morning to see:
+
+- Active clients + health
+- Pipeline by stage with totals
+- Cashflow trajectory
+- Rhythm completion rate (95% over last 4 weeks)
+- Decisions logged this month
+- Hours by category (visual)
+
+## Failure modes
+
+| Symptom | Likely cause | Fix |
+|---|---|---|
+| `/compliance-check` blocking benign drafts | Tokens too aggressive in firewall config | Refine `01-strategy/compliance.md` to scope EMPLOYER terminology more precisely |
+| Rhythm queue growing unbounded | Operator stopped running `/run-due` daily | Re-establish morning trigger; consider reducing cadence on lowest-value rhythms |
+| Council producing fake consensus | Coordinator instructions not enforcing "preserve disagreement" | Re-sync from upstream (`relearn.py`) — likely a stale `councils.md` |
+| `@chief-of-staff` returning ambiguous "I see 4 things you could do" | Agent has access to too much; declared scope drifted | Read the chatmode file; tighten its `tools` + write-scope; re-instantiate |
+
+## What this OS produces in 90 days
+
+Realistic targets (based on the 10h/week budget):
+
+- **Content**: 12 newsletter issues, ~60 LinkedIn posts, 6 blog posts, 8 carousels
+- **Sales**: ~80 outbound DMs, ~40 discovery calls scheduled, 2 closed engagements
+- **Delivery**: 1–2 concurrent clients, weekly status reconciled, 1 case study
+- **Compliance**: zero firewall breaches (the system enforces this)
+- **Self-evolution**: 2–4 new skills forged through `@hiring-manager`, contributed back upstream
+
+Jane crosses $5k/mo MRR around day 75, gives notice day 120.

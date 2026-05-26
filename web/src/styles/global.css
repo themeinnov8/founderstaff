@@ -1,0 +1,29 @@
+/* Starlight custom CSS overrides — dark-default brand palette */
+:root {
+  --sl-color-accent-low: #1e1b4b;
+  --sl-color-accent: #7c3aed;
+  --sl-color-accent-high: #c4b5fd;
+}
+
+:root[data-theme='dark'] {
+  --sl-color-bg: #09090b;
+  --sl-color-bg-nav: #0c0a14;
+  --sl-color-bg-sidebar: #0c0a14;
+  --sl-color-text-accent: #c4b5fd;
+}
+
+:root[data-theme='light'] {
+  --sl-color-accent-low: #ede9fe;
+  --sl-color-accent: #6d28d9;
+  --sl-color-accent-high: #4c1d95;
+}
+
+/* Tighter prose */
+.sl-markdown-content {
+  --sl-line-height: 1.65;
+}
+
+/* Code block tweak */
+.expressive-code {
+  --ec-brdRad: 8px;
+}

@@ -1,0 +1,253 @@
+---
+title: Get started with Claude Code
+description: Step-by-step — clone founderstaff, install skills into a Claude Code workspace, instantiate your first agent, set a rhythm.
+---
+
+import { Steps, Tabs, TabItem, Aside, Code } from '@astrojs/starlight/components';
+
+This walkthrough takes you from zero to "I have an AI chief of staff" in about 5 minutes. We'll use [Claude Code](https://docs.anthropic.com/en/docs/claude-code) — Anthropic's CLI agent — as the host.
+
+## Prerequisites
+
+| Tool | Min version | Install |
+|---|---|---|
+| Python | 3.10+ | [python.org](https://www.python.org/downloads/) — `python --version` |
+| Git | 2.30+ | [git-scm.com](https://git-scm.com/) — `git --version` |
+| Claude Code | latest | `npm install -g @anthropic-ai/claude-code` then `claude login` |
+
+<Aside type="note">
+founderstaff itself has **zero Python dependencies** — `sync.py` and `relearn.py` use only the standard library. No `pip install`, no virtualenv.
+</Aside>
+
+## Step 1 — Create the workspace
+
+<Steps>
+
+1. Make a folder for your new venture.
+
+   ```bash
+   mkdir my-venture && cd my-venture
+   git init
+   ```
+
+2. Create the `.platform/` directory.
+
+   ```bash
+   mkdir .platform
+   ```
+
+3. Copy the four scaffolding files from the founderstaff repo.
+
+   ```bash
+   # one-time: clone the platform somewhere local
+   git clone https://github.com/themeinnov8/founderstaff.git ~/founderstaff
+
+   # copy scaffolding into your workspace
+   cp ~/founderstaff/scaffolding/.platform/relearn.py                    .platform/
+   cp ~/founderstaff/scaffolding/.platform/skills.manifest.yaml          .platform/
+   cp ~/founderstaff/scaffolding/.platform/platform.config.json.template .platform/platform.config.json
+   cp ~/founderstaff/scaffolding/.platform/README.md                     .platform/
+   ```
+
+</Steps>
+
+## Step 2 — Configure tokens
+
+Open `.platform/platform.config.json` and fill in your brand identity:
+
+```json
+{
+  "tokens": {
+    "BRAND": "Acme",
+    "OPERATOR": "Jane Doe",
+    "EMPLOYER": "MyDayJobCorp"
+  }
+}
+```
+
+These get substituted into every installed skill file. `BRAND` appears in chatmodes. `OPERATOR` is your name (used by content + sales). `EMPLOYER` is your day-job employer name (used by the compliance firewall). Leave empty if not applicable.
+
+## Step 3 — Pick your packs
+
+Open `.platform/skills.manifest.yaml`. Add the packs you want. `core` is always installed:
+
+```yaml
+upstream: https://github.com/themeinnov8/founderstaff.git
+branch: main
+packs:
+  - core         # required
+  - research     # citation-disciplined research
+  - content      # blog, LinkedIn, newsletter
+  - operations   # SOPs, meeting notes, weekly review
+```
+
+See [Packs](/skills/packs/) for the full list.
+
+## Step 4 — Install for Claude Code
+
+```bash
+python .platform/relearn.py --target claude
+```
+
+You should see:
+
+```
+[relearn] cloning https://github.com/themeinnov8/founderstaff.git
+[founderstaff] syncing 37 skills into my-venture
+  install: chief-of-staff v0.1.0 -> .claude/agents/chief-of-staff.md
+  install: next-best-action v0.1.0 -> .claude/commands/next-best-action.md
+  install: research-analyst v0.1.0 -> .claude/agents/research-analyst.md
+  ...
+[founderstaff] lockfile updated
+[founderstaff] done.
+```
+
+Your workspace now has:
+
+```
+my-venture/
+├── .platform/
+│   ├── relearn.py
+│   ├── skills.manifest.yaml
+│   ├── skills.lock.json          # ← created by sync
+│   └── platform.config.json
+├── .claude/
+│   ├── agents/                   # chatmodes — Claude subagents
+│   │   ├── chief-of-staff.md
+│   │   ├── research-analyst.md
+│   │   ├── roster-manager.md
+│   │   └── ...
+│   └── commands/                 # prompts — Claude slash commands
+│       ├── next-best-action.md
+│       ├── market-research.md
+│       ├── instantiate-agent.md
+│       └── ...
+└── CLAUDE.md                     # concatenated instructions (auto-managed)
+```
+
+## Step 5 — Open Claude Code
+
+```bash
+claude
+```
+
+Claude Code auto-discovers everything in `.claude/`. Verify by asking:
+
+```
+> /help
+```
+
+You should see your installed slash commands. Then:
+
+```
+> @chief-of-staff
+```
+
+You should be able to switch into the subagent.
+
+## Step 6 — Instantiate your first agent
+
+The roster is empty by default. Activate `chief-of-staff` first:
+
+```
+> /instantiate-agent chief-of-staff
+```
+
+This creates `09-meta/roster.json`:
+
+```json
+{
+  "schema_version": 1,
+  "agents": [
+    {
+      "id": "chief-of-staff",
+      "type": "chatmode",
+      "activated": "2026-05-24",
+      "role": "Daily next-best-action driver",
+      "notes": ""
+    }
+  ]
+}
+```
+
+Repeat for any other agents you want on staff:
+
+```
+> /instantiate-agent research-analyst
+> /instantiate-agent content-creator
+> /instantiate-agent roster-manager
+```
+
+<Aside type="tip">
+Don't activate everyone. The roster is opinionated — most users keep 4–6 agents active. You can always add more later.
+</Aside>
+
+## Step 7 — Set a daily rhythm
+
+```
+> /schedule chief-of-staff daily at=09:00 prompt=/next-best-action
+```
+
+Creates `09-meta/rhythms.json`:
+
+```json
+{
+  "schema_version": 1,
+  "rhythms": [
+    {
+      "id": "chief-of-staff-daily",
+      "agents": ["chief-of-staff"],
+      "kind": "solo",
+      "cadence": "daily",
+      "at": "09:00",
+      "prompt": "/next-best-action",
+      "last_run": null,
+      "active": true
+    }
+  ]
+}
+```
+
+Now each morning:
+
+```
+> /run-due
+```
+
+…will list what's due and offer to fire it.
+
+## Step 8 — Visualize the team
+
+```
+> /roster-dashboard
+```
+
+Writes a self-contained HTML file at `09-meta/dashboard/roster.html`. Open it in a browser — you'll see agent cards, status pills, the rhythm timeline, and recent runs.
+
+## Step 9 — Run your first council (optional)
+
+Once you have 2+ agents on the roster, you can convene a council:
+
+```
+> /schedule chief-of-staff,research-analyst monthly day=1 prompt="/council quarterly-strategy"
+> /run-due --manual chief-of-staff-research-analyst-monthly
+```
+
+The council flow: independent round-1 → cross-read round-2 → coordinator synthesizes decisions, action items, and preserved disagreements. See [Councils](/rhythms/councils/) for the full mechanics.
+
+## Day-2 commands
+
+| Command | What it does |
+|---|---|
+| `python .platform/relearn.py` | Pull latest upstream, re-sync (preserves local edits) |
+| `python .platform/relearn.py --status` | Show installed skills + versions |
+| `python .platform/relearn.py --dry-run` | Show what *would* change |
+| `python .platform/relearn.py --pack n8n` | Add a pack |
+| `python .platform/relearn.py --update` | Bump pinned versions to upstream latest |
+
+## What now?
+
+- See [real-world examples](/examples/) — 4 full end-to-end builds.
+- Browse [agents by pack](/agents/) to plan your roster.
+- Learn the [rhythm mechanics](/rhythms/) — scheduling cadences and councils.
+- Read [Invoking skills](/skills/invoking/) for the patterns and conventions.

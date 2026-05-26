@@ -1,0 +1,14 @@
+{
+  "id": "product",
+  "name": "Product",
+  "summary": "Solo-founder product management: PRDs, user stories, prioritization. No PM theater.",
+  "version": "0.2.0",
+  "skills": [
+    "product-manager",
+    "prd-draft",
+    "user-story",
+    "feature-prioritize"
+  ],
+  "requires_packs": ["core"],
+  "min_platform_version": "0.2.0"
+}

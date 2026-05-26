@@ -1,0 +1,16 @@
+{
+  "name": "founderstaff",
+  "version": "0.3.0-alpha",
+  "released": "2026-05-24",
+  "status": "alpha",
+  "compatibility": {
+    "min_planner_version": "0.1.0",
+    "generated_os_schema": "v1"
+  },
+  "components": {
+    "planner": "0.1.0",
+    "skills": "0.3.0",
+    "scaffolding": "0.1.0"
+  },
+  "notes": "Adds Roster + Rhythms subsystem to core: roster-manager chatmode, /instantiate-agent, /retire-agent, /schedule, /run-due, /council (multi-agent), /roster-dashboard. 75 skills total across 10 packs."
+}

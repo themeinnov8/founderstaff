@@ -1,0 +1,19 @@
+{
+  "id": "sales",
+  "name": "Sales factory",
+  "summary": "Outreach, discovery, proposals, objection handling. Compliance-gated.",
+  "version": "0.2.0",
+  "skills": [
+    "sales-coach",
+    "linkedin-lead-gen",
+    "cold-email",
+    "linkedin-dm",
+    "discovery-call-prep",
+    "discovery-call-recap",
+    "proposal-sow",
+    "objection-handler",
+    "outreach"
+  ],
+  "requires_packs": ["core"],
+  "min_platform_version": "0.2.0"
+}
