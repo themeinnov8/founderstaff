@@ -55,13 +55,12 @@ web/
 
 ## Deploy
 
-Pushed to `main` with changes under `web/**` triggers [.github/workflows/deploy-web.yml](../.github/workflows/deploy-web.yml) which builds and deploys to GitHub Pages.
+Build `web/` and push the generated site to the `gh-pages` branch.
 
 ### One-time GitHub setup
 
-1. Repo Settings → Pages → Source: **GitHub Actions**
-2. Repo Settings → Pages → Custom domain: `founderstaff.com`, enable HTTPS once DNS resolves
-3. DNS: point `founderstaff.com` A records to GitHub Pages IPs (or `CNAME` to `themeinnov8.github.io`)
+1. Repo Settings → Pages → Source: **Deploy from a branch**
+2. Repo Settings → Pages → Branch: **gh-pages** / **(root)**
 
 ## Content edits
 

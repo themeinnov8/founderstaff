@@ -4,7 +4,8 @@ import starlight from '@astrojs/starlight';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://founderstaff.com',
+  site: 'https://themeinnov8.github.io/founderstaff',
+  base: '/founderstaff',
   integrations: [
     starlight({
       title: 'founderstaff',
