@@ -55,12 +55,12 @@ web/
 
 ## Deploy
 
-Build `web/` and push the generated site to the `gh-pages` branch.
+Pushed to `main` with changes under `web/**` triggers [.github/workflows/deploy-web.yml](../.github/workflows/deploy-web.yml) which builds and deploys to GitHub Pages.
 
 ### One-time GitHub setup
 
-1. Repo Settings → Pages → Source: **Deploy from a branch**
-2. Repo Settings → Pages → Branch: **gh-pages** / **(root)**
+1. Repo Settings → Pages → Source: **GitHub Actions**
+2. Repo Settings → Actions → General: enable Actions for this repo
 
 ## Content edits
 
